@@ -1,0 +1,177 @@
+<mat-toolbar color="primary">
+  <span>IMDB Movie List</span>
+</mat-toolbar>
+<mat-card>
+  <mat-card>
+    <mat-card-title>
+      Filtering Options
+    </mat-card-title>
+    <mat-card-content>
+      <div>
+        <form [formGroup]='filterForm' #fform="ngForm">
+          <div fxFlex>
+            <mat-form-field appearance="outline" class='search'>
+              <mat-label>Search</mat-label> <input matInput placeholder="Type here" formControlName='search'>
+              <mat-icon matSuffix>search</mat-icon>
+              <mat-hint>Movie Title / Actor / Director / Description</mat-hint>
+            </mat-form-field>
+            <p>&nbsp;</p>
+          </div>
+          <mat-label>Minimum Movie Rating</mat-label>
+          <mat-slider formControlName='rating' thumbLabel [displayWith]="formatRating" tickInterval="1" min="70"
+            max="100">
+          </mat-slider>
+          <mat-label>Minimum Movie Release Year</mat-label>
+          <mat-slider formControlName='year' thumbLabel tickInterval="1" min="1915" max="{{currentYear}}"></mat-slider>
+          <mat-accordion>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Genre
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class='scroll'>
+                <table width='100%'>
+                  <tr>
+                    <td width='25%'>
+                      <mat-list>
+                        <mat-list-item>
+                          <mat-checkbox formControlName='comedy'>Comedy</mat-checkbox>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <mat-checkbox formControlName='scifi'>Sci-Fi</mat-checkbox>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <mat-checkbox formControlName='horror'>Horror</mat-checkbox>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <mat-checkbox formControlName='romance'>Romance</mat-checkbox>
+                        </mat-list-item>
+                      </mat-list>
+                    </td>
+                    <td width='25%'>
+                      <mat-list>
+                        <mat-list-item>
+                          <mat-checkbox formControlName='action'>Action</mat-checkbox>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <mat-checkbox formControlName='thriller'>Thriller</mat-checkbox>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <mat-checkbox formControlName='drama'>Drama</mat-checkbox>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <mat-checkbox formControlName='mystery'>Mystery</mat-checkbox>
+                        </mat-list-item>
+                      </mat-list>
+                    </td>
+                    <td width='25%'>
+                      <mat-list>
+                        <mat-list-item>
+                          <mat-checkbox formControlName='crime'>Crime</mat-checkbox>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <mat-checkbox formControlName='animation'>Animation</mat-checkbox>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <mat-checkbox formControlName='adventure'>Adventure</mat-checkbox>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <mat-checkbox formControlName='fantasy'>Fantasy</mat-checkbox>
+                        </mat-list-item>
+                      </mat-list>
+                    </td>
+                    <td width='25%'>
+                      <mat-list>
+                        <mat-list-item>
+                          <mat-checkbox formControlName='superhero'>Superhero</mat-checkbox>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <mat-checkbox formControlName='documentary'>Documentary</mat-checkbox>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <mat-checkbox formControlName='documentary'>Biography</mat-checkbox>
+                        </mat-list-item>
+                        <mat-list-item>
+                          <mat-checkbox formControlName='documentary'>Sport</mat-checkbox>
+                        </mat-list-item>
+                      </mat-list>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </form>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <p>&nbsp;</p>
+  <div fxFlex>
+    <mat-card>
+      <mat-card-title>
+        List of Movies sorted by IMDB Rating
+      </mat-card-title>
+      <mat-card-content>
+        <p>&nbsp;</p>
+        <div fxFlex *ngIf="filteredMovies">
+          <mat-accordion>
+            <movie-detail *ngFor="let movie of paginate(page_count)" [movie]="movie">
+            </movie-detail>
+          </mat-accordion>
+          <mat-card-actions>
+            <p>&nbsp;</p>
+            <mat-card>
+              <table class='button-container' width="100%">
+                <tr>
+                  <td width="20%">
+                    <button mat-mini-fab color="primary" (click)="prevPage()" [disabled]='page_count==0'>
+                      <mat-icon>arrow_back</mat-icon>
+                    </button>
+                  </td>
+                  <td width="60%" style="word-wrap: none;">
+                    <mat-form-field appearance="outline" class='search' class='curr-page-wrapper'>
+                      <mat-label>Current Page</mat-label><input matInput type="number" (change)="page_change(page.value)" value="{{page_count+1}}" #page>
+                    </mat-form-field>
+                  </td>
+                  <td width="20%">
+                    <button mat-mini-fab color="primary" (click)="nextPage()" [disabled]='page_count+1>=total_count'>
+                      <mat-icon>arrow_forward</mat-icon>
+                    </button>
+                  </td>
+                </tr>
+              </table>
+              <p>&nbsp;</p>
+              <p class='button-container'>Total Pages : {{total_count}}</p>
+              <p class='button-container'>Total Movies Listed Above : {{paginate_count}}</p>
+              <p class='button-container'>Total Movies Filtered : {{filteredMovies.length}}</p>
+              <p>&nbsp;</p>
+            </mat-card>
+          </mat-card-actions>
+        </div>
+        <div fxFlex [hidden]='filteredMovies'>
+          <p class='spinner-notification'>Please wait while the data is being downloaded. It may take up to a minute
+            depending upon your internet speed. You will not need to download again unless you reload the page.</p>
+          <p>&nbsp;</p>
+          <div class="spinner-container">
+            <mat-spinner></mat-spinner>
+          </div>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <p>&nbsp;</p>
+  <mat-card>
+    <mat-card-content>
+      <div class="description">
+        <b>Note : </b> The sole purpose of this website is to provide a more interactive interface to filter movies
+        listed on the <a href='https://www.imdb.com/' target='_blank'>IMDB Website</a>. This collection of movies is
+        based on a database containing the top 5000 movies with a minimum of 7 IMDB rating and with atleast 5000 votes.
+        All Movie Titles, Directors and Actors have been provided with a google search link respectively.
+        The database was built by scraping data from the same and was last updated on 30<sup>th</sup> April 2020.
+      </div>
+    </mat-card-content>
+  </mat-card>
+</mat-card>

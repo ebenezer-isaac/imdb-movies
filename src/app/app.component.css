@@ -1,0 +1,41 @@
+.description {
+    text-align: justify
+}
+
+.search {
+    width: 100%;
+}
+
+mat-slider {
+    width: 100%;
+}
+
+.scroll {
+    overflow-x: scroll
+}
+
+.spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button-container {
+    justify-content: center;
+    text-align: center;
+}
+
+td {
+    white-space: pre;
+    justify-content: center;
+    text-align: center;
+}
+
+.spinner-notification {
+    justify-content: center;
+    text-align: center;
+}
+
+.curr-page-wrapper{
+    width: 90px;
+}

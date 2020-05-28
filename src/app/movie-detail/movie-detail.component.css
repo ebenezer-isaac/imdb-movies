@@ -1,0 +1,22 @@
+td {
+  white-space: pre
+}
+
+.mat-expansion-panel-header-description {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.panel-title {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.image-container {
+  text-align: center;
+}
+
+.desc-container {
+  text-align: justify
+}

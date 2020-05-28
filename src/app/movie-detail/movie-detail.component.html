@@ -1,0 +1,57 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <div>
+        {{movie.rating}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{movie.shortTitle}}
+      </div>
+    </mat-panel-title>
+    <mat-panel-description>
+      {{movie.year}}&nbsp;&nbsp;&nbsp;
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <mat-card>
+    <mat-card-title>
+      <mat-card-subtitle class="panel-title">
+        <a href='https://www.google.com/search?q={{movie.title}}' target="_blank">{{movie.title}}</a>
+      </mat-card-subtitle>
+    </mat-card-title>
+    <div fxLayout="row" fxLayoutAlign="space-evenly stretch" fxLayoutGap='10'>
+      <div class='image-container' fxFlex>
+        <img src={{movie.image}} height="130px">
+      </div>
+      <div fxFlex>
+        <mat-tab-group>
+          <mat-tab label="Description">
+            <mat-card>
+              <div class='desc-container' fxFlex>
+                <p>{{movie.desc}}</p>
+              </div>
+              <mat-divider></mat-divider>
+              <div fxFlex>
+                <p>&nbsp;</p>
+                <p>Runtime : {{movie.runtime}}</p>
+              </div>
+              <div fxFlex>
+                <p>Genres :</p>
+                <ul *ngFor="let genre of movie.genres">
+                  <li><span matLine>{{genre}}</span></li>
+                </ul>
+              </div>
+            </mat-card>
+          </mat-tab>
+          <mat-tab label="Crew">
+            <mat-card>
+              <p>Director : <a href='https://www.google.com/search?q={{movie.director}}'
+                  target="_blank">{{movie.director}}</a>
+              </p>
+              <p>Actors : </p>
+              <ul *ngFor="let actor of movie.actors">
+                <li><a href='https://www.google.com/search?q={{actor}}' target="_blank">{{actor}}</a></li>
+              </ul>
+            </mat-card>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </mat-card>
+</mat-expansion-panel>
